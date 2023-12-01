@@ -1,19 +1,28 @@
 trigger: none
-pr: none 
+pr: none
 
 pool:
   vmImage: ubuntu-latest
 
 stages:
-  - stage: tfvalidate
-    displayName: terraform validate and init
-    jobs:
-      -  job: validate
-         continueOnError: false
-         steps:
-         - task: TerraformInstaller@1
-           displayName: tfinstall
-           inputs:
-             terraformVersion: 'latest'
-          
+- stage: tfvalidate
+  displayName: terraform validate and init
+  jobs:
+  - job: validate
+    continueOnError: false
+    steps:
+    - task: TerraformInstaller@1
+      displayName: tfinstall
+      inputs:
+        terraformVersion: 'latest'
+      
+    - task: TerraformTaskV4@4
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        backendServiceArm: 'Devtestserviceconnection'
+        backendAzureRmResourceGroupName: 'rgbucky'
+        backendAzureRmStorageAccountName: 'axel12'
+        backendAzureRmContainerName: 'papito'
+        backendAzureRmKey: 'terraform.tfstate'
  
